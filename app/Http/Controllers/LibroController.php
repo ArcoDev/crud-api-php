@@ -23,19 +23,23 @@ class LibroController extends Controller{
     //adjuntar el file en una carpeta de
     //validar que exista un archivo
     if($request->hasFile('imagen')){
+        //Concatenarle un nuevo nombrea a la imagen para evitar que cada que se mande se sobreescriba
         $nombreArchivoOriginal = $request->file('imagen')->getClientOriginalName();
         $nuevoNombre = Carbon::now()->timestamp."_".$nombreArchivoOriginal;
+        
         //Creacion de la carpeta donde se guardara la imagen
         $carpetaDestino = './upload/';
+        
         //guardar la img en la carpeta con el nuevo nombre de la imagen
         $request->file('imagen')->move($carpetaDestino, $nuevoNombre);
+        
+        //nombre de la columna de la tabla = nombre de lo que nos arroga el json de postman
+        $datosLibro->titulo = $request->titulo;
+        $datosLibro->imagen = ltrim($carpetaDestino,'.').$nuevoNombre;
+        
+        //Guardar la informacion en la bd
+        $datosLibro->save();
     }
-    //nombre de la columna de la tabla = nombre de lo que nos arroga el json de postman
-    $datosLibro->titulo = $request->titulo;
-    $datosLibro->imagen = $request->imagen;
-    
-    //Guardar la informacion en la bd
-    $datosLibro->save();
     
     //mostrar la informacion en postman
     return response()->json($nuevoNombre);
