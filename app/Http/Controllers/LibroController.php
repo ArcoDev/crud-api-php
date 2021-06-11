@@ -45,7 +45,7 @@ class LibroController extends Controller{
     return response()->json($nuevoNombre);
    
    }
-
+   //Ver informacion de la BD
    public function ver($id) {
        $datosLibro = new Libro;
        
@@ -53,4 +53,33 @@ class LibroController extends Controller{
        $datosEncontrados = $datosLibro->find($id);
        return response()->json($datosEncontrados);
    } 
+ 
+   //Eliminar reigstro de la BD
+   public function eliminar($id) {
+
+    $datosLibro = Libro::find($id);
+    //Validar que exista un archivo
+    if($datosLibro) {
+        //ubicar el archivo y su rua
+        $rutaArchivo = base_path('public').$datosLibro->imagen;
+        //validar que exista lo anterior y si es asi eliminarlo
+        if($rutaArchivo) {
+            unlink($rutaArchivo);
+        }
+        $datosLibro->delete();
+    }
+      return response()->json("Registro Borrado");
+   }
+
+   //Actualizar el registro con todo y la imagen nueva regist
+   public function actualizar(Request $request, $id) {
+
+     //buscar la informacion del libro
+     $datosLibro = Libro::find($id);
+     if($request->input('titulo')) {
+         $datosLibro->titulo = $request->input('titulo');
+     }
+     $datosLibro->save();
+     return response()->json("Datos actualizados");
+   }
 }

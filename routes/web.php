@@ -27,3 +27,9 @@ $router->get('/libros/{id}', 'LibroController@ver');
 
 //Enviar datos 
 $router->post('/libros', 'LibroController@guardar');
+
+//Eliminar informacion de la BD
+$router->delete('/libros/{id}', 'LibroController@eliminar');
+
+//Actualizar datos 
+$router->post('/libros/{id}', 'LibroController@actualizar');
