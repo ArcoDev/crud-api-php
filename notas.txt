@@ -1,0 +1,7 @@
+- CREAR MIGRACIONES (las migraciones desde php nos sirve para crear tablas a la BD sin tocar phpmyadmin)
+php artisan make:migration libros --create=libros
+
+- CORRER LAS MIGRACIONES (creacion de la tablas y mandarlo a la BD)
+php artisan migrate
+
+-COMANDOS DE LUMEN

@@ -24,8 +24,8 @@ $app = new Laravel\Lumen\Application(
 );
 
 // $app->withFacades();
-
-// $app->withEloquent();
+//acceder a la base de datos y traernos la informacion
+$app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------

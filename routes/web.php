@@ -16,3 +16,11 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+/*Ejemplo de la creacion de una ruta
+  Le pasamos el nombre de la ruta, el nombre del controlador y el de la funcion que contiene la informacion consultada de la BD
+*/
+$router->get('/libros', 'LibroController@index');
+
+//ENviar datos 
+$router->post('/libros', 'LibroController@guardar');
