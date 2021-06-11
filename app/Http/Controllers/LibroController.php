@@ -25,6 +25,10 @@ class LibroController extends Controller{
     if($request->hasFile('imagen')){
         $nombreArchivoOriginal = $request->file('imagen')->getClientOriginalName();
         $nuevoNombre = Carbon::now()->timestamp."_".$nombreArchivoOriginal;
+        //Creacion de la carpeta donde se guardara la imagen
+        $carpetaDestino = './upload/';
+        //guardar la img en la carpeta con el nuevo nombre de la imagen
+        $request->file('imagen')->move($carpetaDestino, $nuevoNombre);
     }
     //nombre de la columna de la tabla = nombre de lo que nos arroga el json de postman
     $datosLibro->titulo = $request->titulo;
