@@ -22,5 +22,8 @@ $router->get('/', function () use ($router) {
 */
 $router->get('/libros', 'LibroController@index');
 
-//ENviar datos 
+//Ver informacion de la BD
+$router->get('/libros/{id}', 'LibroController@ver');
+
+//Enviar datos 
 $router->post('/libros', 'LibroController@guardar');

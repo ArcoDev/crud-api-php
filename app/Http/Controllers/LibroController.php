@@ -14,7 +14,7 @@ class LibroController extends Controller{
        return response()->json($datosLibro);
    }
 
-   public function guardar(Request $request){
+   public function guardar(Request $request) {
     //Instanciar el libro para mandar la info
     $datosLibro = new Libro;
 
@@ -45,4 +45,12 @@ class LibroController extends Controller{
     return response()->json($nuevoNombre);
    
    }
+
+   public function ver($id) {
+       $datosLibro = new Libro;
+       
+       //Buscar todos los libros de la BD mediante el id de las
+       $datosEncontrados = $datosLibro->find($id);
+       return response()->json($datosEncontrados);
+   } 
 }
