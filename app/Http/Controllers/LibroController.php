@@ -42,6 +42,7 @@ class LibroController extends Controller{
     }
     
     //mostrar la informacion en postman
+    return response()->json("Se agrego correctamente");
     return response()->json($nuevoNombre);
    
    }
@@ -57,10 +58,10 @@ class LibroController extends Controller{
    //Eliminar reigstro de la BD
    public function eliminar($id) {
 
-    $datosLibro = Libro::find($id);
+    $datosLibro = new Libro;
     //Validar que exista un archivo
     if($datosLibro) {
-        //ubicar el archivo y su rua
+        //ubicar el archivo y su ruta
         $rutaArchivo = base_path('public').$datosLibro->imagen;
         //validar que exista lo anterior y si es asi eliminarlo
         if($rutaArchivo) {
@@ -71,11 +72,31 @@ class LibroController extends Controller{
       return response()->json("Registro Borrado");
    }
 
-   //Actualizar el registro con todo y la imagen nueva regist
+   //Actualizar el registro con todo y la imagen
    public function actualizar(Request $request, $id) {
 
      //buscar la informacion del libro
      $datosLibro = Libro::find($id);
+
+     //validar que exista un archivo
+    if($request->hasFile('imagen')){
+        if($datosLibro) {
+            //ubicar el archivo y su ruta
+            $rutaArchivo = base_path('public').$datosLibro->imagen;
+            //validar que exista lo anterior y si es asi eliminarlo
+            if($rutaArchivo) {
+                unlink($rutaArchivo);
+            }
+            $datosLibro->delete();
+        }
+        //Concatenarle un nuevo nombre a la imagen para evitar que cada que se mande se sobreescriba
+        $nombreArchivoOriginal = $request->file('imagen')->getClientOriginalName();
+        $nuevoNombre = Carbon::now()->timestamp."_".$nombreArchivoOriginal;
+        $carpetaDestino = './upload/';
+        $request->file('imagen')->move($carpetaDestino, $nuevoNombre);
+        $datosLibro->imagen = ltrim($carpetaDestino,'.').$nuevoNombre;
+        $datosLibro->save();
+    }
      if($request->input('titulo')) {
          $datosLibro->titulo = $request->input('titulo');
      }
